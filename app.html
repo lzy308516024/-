@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>转盘抽奖</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		html,body {
+			background: skyblue;
+			height: 100%;
+			overflow:hidden;
+		}
+		.app {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.box {
+			width: 400px;
+			height: 400px;
+			position: relative;
+			user-select: none;
+		}
+		.img-wrap {
+			width: 100%;
+			height: 100%;
+			user-select: none;
+		}
+		.img-wrap img {
+			width: 100%;
+			height: 100%;
+			user-select: none;
+		}
+		
+		.btn {
+			position: absolute;
+			width: 120px;
+			height: 120px;
+			overflow: hidden;
+			
+			top:140px;
+			left: 140px;
+			background: url('./images/arrow.png') no-repeat;
+			background-size: cover;
+		}
+		
+	</style>
+</head>
+<body>
+	<div id="app" class="app">
+		<div class="box" id = "box">
+			<div class="img-wrap">
+				<img src="./images/zzsc.png" alt="">
+			</div>
+			<div class="btn" id="btn">
+				<div class="little">
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		var btn = document.querySelector('#btn');
+		var box = document.querySelector('.img-wrap');
+		let doing = false;
+		let rotateNum = 8;
+		let defNum = rotateNum*360; //8次所需要转动的次数
+		btn.onclick = function(){
+			let random = Math.floor(Math.random()*360);
+			
+			go(random);
+		}
+		function go(random){
+			if(doing){
+				return
+			}
+			doing = true
+			
+			let ranDeg = random+defNum;
+			
+			box.style.transform = "rotate("+ranDeg+"deg)";
+			box.style.transition = "all 5s";
+			box.setAttribute("data-deg",random);
+		}
+		box.addEventListener('transitionend',function(){
+			doing = false;
+			let deg = box.getAttribute("data-deg");
+			
+			box.style.transform = "rotate("+deg+"deg)";
+			box.style.transition = "none";
+			
+			let posDeg = 360-deg
+			
+			alert("恭喜你获得了"+getPrize(posDeg));
+		},false)
+
+		function getPrize(posDeg){
+			
+	        if((posDeg>330&&posDeg<=360)||posDeg>0&&posDeg<=30){
+	            return "10M流量"
+	        }else if(posDeg>30&&posDeg<=90){
+	            return 'iphone 7';
+	        }else if(posDeg>90&&posDeg<=150){
+	            return '30M流量';
+	        }else if(posDeg>150&&posDeg<=210){
+	            return '5元话费';
+	        }else if(posDeg>210&&posDeg<=270){
+	            return 'ipad mini4';
+	        }else if(posDeg>270&&posDeg<=330){
+	            return '20元话费';
+	        }
+	    }
+	</script>
+
+</body>
+</html>
